@@ -1,7 +1,6 @@
 // imports
 const dbPosts = require('../data/db.js')
-const { writeJSON } = require('../utils.js');
-
+const path = require("path");
 
 // export controller
 module.exports = {
@@ -43,12 +42,20 @@ module.exports = {
 
     create: (req, res) => {
         res.format({
-            html: () =>{
+            html: () => {
                 res.send(`<h1>Creazione nuovo post</h1>`)
             },
             default: () => {
                 res.sendStatus(406);
             }
         })
+    },
+
+    download: (req, res) => {
+        const slug = req.params.slug;
+        const post = dbPosts.find(post => post.slug === slug)
+        const downloadPath = path.join('public/img/' + post.image);
+        console.log(downloadPath);
+        res.download(downloadPath);
     }
 }

@@ -13,6 +13,7 @@ const postRouter = require('./routers/post');
 app.get('/', (req, res) =>{
     res.end(`
     <h1> Blogghino </h1>
+    <a href="/posts"> Vai alla lista dei post</a>
     `)
 });
 
