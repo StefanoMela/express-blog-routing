@@ -17,7 +17,11 @@ module.exports = {
                     <ul>
                     `;
                     post.tags.forEach(tag => html += `<li>${tag}</li>`);
-                    html += `</ul>`
+                    html += `
+                    </ul>
+                    <a href="/posts/${post.slug}"> Vai al post</a>
+                    <br>
+                    `
                 })
                 html += `</div>`
                 res.send(html)
@@ -26,14 +30,19 @@ module.exports = {
     },
     show: (req, res) => {
         const requestedSlug = req.params.slug;
-        const reqItem = dbPosts.find(post => post.slug === requestedSlug);
+        const requestedPost = dbPosts.find(post => post.slug === requestedSlug);
+        if (!requestedPost) {
+            return res.status(404).send(`<h1>Post non trovato</h1>`);
+        }
         res.format({
             html: () => {
-                reqItem ? res.send(`
+                requestedPost ? res.send(`
                 <div>
-                    <h3>${reqItem.title}</h3>
-                    <img width="200" src=${`/img/${reqItem.image}`} />
-                    <p><strong>Tags</strong>: ${reqItem.tags.map(t => `<span class="tag">${t}</span>`).join(', ')}</p>
+                    <h3>${requestedPost.title}</h3>
+                    <img width="200" src=${`/img/${requestedPost.image}`} />
+                    <p>${requestedPost.content}</p>
+                    <p><strong>Tags</strong>: ${requestedPost.tags.map(t => `<span class="tag">${t}</span>`).join(', ')}</p>
+                    <a href="/posts">torna alla lista</a>
                 </div>
             `) : res.status(404).send(`<h1>Post non trovato</h1>`);
             }
