@@ -9,12 +9,24 @@ app.use(express.json());
 // import router
 const postRouter = require('./routers/post');
 
+// import data
+const dbPosts = require('./data/db.js')
+
 // inizializzaione app Express
 app.get('/', (req, res) =>{
-    res.end(`
+    let indexContent = `
     <h1> Blogghino </h1>
     <a href="/posts"> Vai alla lista dei post</a>
-    `)
+    <p>oppure navigali uno per uno:</p>
+    <ul>
+    `;
+    dbPosts.forEach(post => {
+        indexContent += `
+        <li><a href="/posts/${post.id}">${post.title}</a></li>
+        `;
+    });
+    indexContent += `</ul>`;
+    res.send(indexContent);
 });
 
 app.use('/posts', postRouter)
