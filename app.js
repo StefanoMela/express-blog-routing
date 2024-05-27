@@ -14,6 +14,16 @@ const dbPosts = require('./data/db.js')
 
 // inizializzaione app Express
 app.get('/', (req, res) =>{
+
+    // const indexContent =
+    // `
+    // <h1> Blogghino </h1>
+    // <a href="/posts"> Vai alla lista dei post</a>
+    // <p>oppure navigali uno per uno:</p>
+    // <ul>${dbPosts.map((post) => `<li><a href="${post.slug}">${post.title}</a></li>`).join("")}
+    // </ul>
+    // `
+    // res.send(indexContent);
     let indexContent = `
     <h1> Blogghino </h1>
     <a href="/posts"> Vai alla lista dei post</a>
@@ -22,7 +32,7 @@ app.get('/', (req, res) =>{
     `;
     dbPosts.forEach(post => {
         indexContent += `
-        <li><a href="/posts/${post.id}">${post.title}</a></li>
+        <li><a href="/posts/${post.slug}">${post.title}</a></li>
         `;
     });
     indexContent += `</ul>`;
